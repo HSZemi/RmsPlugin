@@ -1,0 +1,37 @@
+<idea-plugin>
+    <id>de.hszemi.rmsplugin</id>
+    <name>RMS plugin</name>
+    <version>1.0</version>
+    <vendor email="rmsplugin@hszemi.de" url="https://hszemi.de">hszemi</vendor>
+
+    <description><![CDATA[
+      Support for Age of Empires II Random Map Scripts
+    ]]></description>
+
+    <change-notes><![CDATA[
+      (none)
+    ]]>
+    </change-notes>
+
+    <!-- please see http://www.jetbrains.org/intellij/sdk/docs/basics/getting_started/build_number_ranges.html for description -->
+    <idea-version since-build="145.0"/>
+
+    <!-- please see http://www.jetbrains.org/intellij/sdk/docs/basics/getting_started/plugin_compatibility.html
+         on how to target different products -->
+    <!-- uncomment to enable plugin in all products
+    <depends>com.intellij.modules.lang</depends>
+    -->
+
+    <extensions defaultExtensionNs="com.intellij">
+        <!-- Add your extensions here -->
+        <fileTypeFactory implementation="de.hszemi.rmsplugin.RmsFileTypeFactory"/>
+        <lang.parserDefinition language="Rms" implementationClass="de.hszemi.rmsplugin.RmsParserDefinition"/>
+        <lang.syntaxHighlighterFactory language="Rms" implementationClass="de.hszemi.rmsplugin.RmsSyntaxHighlighterFactory"/>
+        <colorSettingsPage implementation="de.hszemi.rmsplugin.RmsColorSettingsPage"/>
+    </extensions>
+
+    <actions>
+        <!-- Add your actions here -->
+    </actions>
+
+</idea-plugin>

@@ -1,0 +1,44 @@
+{
+  parserClass="de.hszemi.rmsplugin.parser.RmsParser"
+
+  extends="com.intellij.extapi.psi.ASTWrapperPsiElement"
+
+  psiClassPrefix="Rms"
+  psiImplClassSuffix="Impl"
+  psiPackage="de.hszemi.rmsplugin.psi"
+  psiImplPackage="de.hszemi.rmsplugin.impl"
+
+  elementTypeHolderClass="de.hszemi.rmsplugin.psi.RmsTypes"
+  elementTypeClass="de.hszemi.rmsplugin.psi.RmsElementType"
+  tokenTypeClass="de.hszemi.rmsplugin.psi.RmsTokenType"
+}
+
+rmsFile ::= item_*
+
+private item_ ::= (section|hashmacro|COMMENT|CRLF)
+
+hashmacro ::= KEYWORD_HASHMACRO hashmacro_name? INTEGER?
+
+hashmacro_name ::= CONST_NAME | FILENAME
+
+
+private section ::= (player_setup | land_generation | elevation_generation | cliff_generation | terrain_generation |
+                    connection_generation | objects_generation)
+
+private player_setup ::= HEADER_PLAYER_SETUP (player_setup_command|CRLF)*
+private player_setup_command ::= (four_parameter_command|no_parameter_command|COMMAND_PLAYER_SETUP|COMMENT)
+private land_generation ::= HEADER_LAND_GENERATION (land_generation_command|CRLF)*
+private land_generation_command ::= (four_parameter_command|COMMAND_LAND_GENERATION|COMMENT)
+private elevation_generation ::= HEADER_ELEVATION_GENERATION (elevation_generation_command|CRLF)*
+private elevation_generation_command ::= (four_parameter_command|COMMAND_ELEVATION_GENERATION|COMMENT)
+private cliff_generation ::= HEADER_CLIFF_GENERATION (cliff_generation_command|CRLF)*
+private cliff_generation_command ::= (four_parameter_command|COMMAND_CLIFF_GENERATION|COMMENT)
+private terrain_generation ::= HEADER_TERRAIN_GENERATION (terrain_generation_command|CRLF)*
+private terrain_generation_command ::= (four_parameter_command|COMMAND_TERRAIN_GENERATION|COMMENT)
+private connection_generation ::= HEADER_CONNECTION_GENERATION (connection_generation_command|CRLF)*
+private connection_generation_command ::= (four_parameter_command|COMMAND_CONNECTION_GENERATION|COMMENT)
+private objects_generation ::= HEADER_OBJECTS_GENERATION (objects_generation_command|CRLF)*
+private objects_generation_command ::= (four_parameter_command|COMMAND_OBJECTS_GENERATION|COMMENT)
+
+private four_parameter_command ::= COMMAND_NAME (CONST_NAME|INTEGER) (CONST_NAME|INTEGER) (CONST_NAME|INTEGER) (CONST_NAME|INTEGER)
+private no_parameter_command ::= COMMAND_NAME
