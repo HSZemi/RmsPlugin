@@ -23,6 +23,16 @@ HASHMACRO_NAME=[A-Za-z_][a-z_0-9]*
 FILENAME=[A-Za-z._][A-Za-z._0-9]*
 COMMAND_NAME=[a-z_][a-z_0-9]*
 INTEGER=-?[1-9][0-9]* | 0
+LEFT_BRACKET=\{
+RIGHT_BRACKET=\}
+START_RANDOM=start_random
+END_RANDOM=end_random
+PERCENT_CHANCE=percent_chance
+DEFINE=#define
+IF_STATEMENT=if
+ELSEIF_STATEMENT=elseif
+ELSE_STATEMENT=else
+ENDIF_STATEMENT=endif
 HEADER_PLAYER_SETUP=<PLAYER_SETUP>
 HEADER_LAND_GENERATION=<LAND_GENERATION>
 HEADER_ELEVATION_GENERATION=<ELEVATION_GENERATION>
@@ -78,6 +88,17 @@ COMMAND_OBJECTS_GENERATION=COG | {CRLF}
 {HEADER_TERRAIN_GENERATION}                     { yybegin(IN_TERRAIN_GENERATION); return RmsTypes.HEADER_TERRAIN_GENERATION; }
 {HEADER_CONNECTION_GENERATION}                  { yybegin(IN_CONNECTION_GENERATION); return RmsTypes.HEADER_CONNECTION_GENERATION; }
 {HEADER_OBJECTS_GENERATION}                     { yybegin(IN_OBJECTS_GENERATION); return RmsTypes.HEADER_OBJECTS_GENERATION; }
+
+{LEFT_BRACKET}                                   { return RmsTypes.LEFT_BRACKET; }
+{RIGHT_BRACKET}                                  { return RmsTypes.RIGHT_BRACKET; }
+{START_RANDOM}                                   { return RmsTypes.START_RANDOM; }
+{END_RANDOM}                                     { return RmsTypes.END_RANDOM; }
+{PERCENT_CHANCE}                                     { return RmsTypes.PERCENT_CHANCE; }
+{DEFINE}                                     { return RmsTypes.DEFINE; }
+{IF_STATEMENT}                                     { return RmsTypes.IF_STATEMENT; }
+{ELSEIF_STATEMENT}                                     { return RmsTypes.ELSEIF_STATEMENT; }
+{ELSE_STATEMENT}                                     { return RmsTypes.ELSE_STATEMENT; }
+{ENDIF_STATEMENT}                                     { return RmsTypes.ENDIF_STATEMENT; }
 
 <IN_PLAYER_SETUP> {
  {COMMAND_PLAYER_SETUP}{CRLF}                    { yybegin(IN_PLAYER_SETUP); return RmsTypes.COMMAND_PLAYER_SETUP; }

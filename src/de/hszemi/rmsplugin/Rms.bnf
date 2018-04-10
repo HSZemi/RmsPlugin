@@ -17,6 +17,8 @@ rmsFile ::= item_*
 
 private item_ ::= (section|hashmacro|COMMENT|CRLF)
 
+
+
 hashmacro ::= KEYWORD_HASHMACRO hashmacro_name? INTEGER?
 
 hashmacro_name ::= CONST_NAME | FILENAME
@@ -25,20 +27,30 @@ hashmacro_name ::= CONST_NAME | FILENAME
 private section ::= (player_setup | land_generation | elevation_generation | cliff_generation | terrain_generation |
                     connection_generation | objects_generation)
 
-private player_setup ::= HEADER_PLAYER_SETUP (player_setup_command|CRLF)*
-private player_setup_command ::= (four_parameter_command|no_parameter_command|COMMAND_PLAYER_SETUP|COMMENT)
-private land_generation ::= HEADER_LAND_GENERATION (land_generation_command|CRLF)*
-private land_generation_command ::= (four_parameter_command|COMMAND_LAND_GENERATION|COMMENT)
-private elevation_generation ::= HEADER_ELEVATION_GENERATION (elevation_generation_command|CRLF)*
-private elevation_generation_command ::= (four_parameter_command|COMMAND_ELEVATION_GENERATION|COMMENT)
-private cliff_generation ::= HEADER_CLIFF_GENERATION (cliff_generation_command|CRLF)*
-private cliff_generation_command ::= (four_parameter_command|COMMAND_CLIFF_GENERATION|COMMENT)
-private terrain_generation ::= HEADER_TERRAIN_GENERATION (terrain_generation_command|CRLF)*
-private terrain_generation_command ::= (four_parameter_command|COMMAND_TERRAIN_GENERATION|COMMENT)
-private connection_generation ::= HEADER_CONNECTION_GENERATION (connection_generation_command|CRLF)*
-private connection_generation_command ::= (four_parameter_command|COMMAND_CONNECTION_GENERATION|COMMENT)
-private objects_generation ::= HEADER_OBJECTS_GENERATION (objects_generation_command|CRLF)*
-private objects_generation_command ::= (four_parameter_command|COMMAND_OBJECTS_GENERATION|COMMENT)
+player_setup ::= HEADER_PLAYER_SETUP (player_setup_command|CRLF)*
+private player_setup_command ::= (command|COMMAND_PLAYER_SETUP|COMMENT)
+land_generation ::= HEADER_LAND_GENERATION (land_generation_command|CRLF)*
+private land_generation_command ::= (command|COMMAND_LAND_GENERATION|COMMENT)
+elevation_generation ::= HEADER_ELEVATION_GENERATION (elevation_generation_command|CRLF)*
+private elevation_generation_command ::= (command|COMMAND_ELEVATION_GENERATION|COMMENT)
+cliff_generation ::= HEADER_CLIFF_GENERATION (cliff_generation_command|CRLF)*
+private cliff_generation_command ::= (command|COMMAND_CLIFF_GENERATION|COMMENT)
+terrain_generation ::= HEADER_TERRAIN_GENERATION (terrain_generation_command|CRLF)*
+private terrain_generation_command ::= (command|COMMAND_TERRAIN_GENERATION|COMMENT)
+connection_generation ::= HEADER_CONNECTION_GENERATION (connection_generation_command|CRLF)*
+private connection_generation_command ::= (command|COMMAND_CONNECTION_GENERATION|COMMENT)
+objects_generation ::= HEADER_OBJECTS_GENERATION (objects_generation_command|CRLF)*
+private objects_generation_command ::= (command|COMMAND_OBJECTS_GENERATION|COMMENT)
 
-private four_parameter_command ::= COMMAND_NAME (CONST_NAME|INTEGER) (CONST_NAME|INTEGER) (CONST_NAME|INTEGER) (CONST_NAME|INTEGER)
-private no_parameter_command ::= COMMAND_NAME
+command ::= brackets_command | non_brackets_command
+
+random_block ::= START_RANDOM (PERCENT_CHANCE INTEGER DEFINE CONST_NAME)* END_RANDOM
+
+if_block ::= IF_STATEMENT CONST_NAME command* (ELSEIF_STATEMENT CONST_NAME command*)* (ELSE_STATEMENT command*)* ENDIF_STATEMENT
+
+private non_brackets_command ::= random_block | if_block | four_parameter_command | one_parameter_command | no_parameter_command | COMMENT
+
+brackets_command ::= COMMAND_NAME CONST_NAME? LEFT_BRACKET (non_brackets_command|CRLF)* RIGHT_BRACKET
+four_parameter_command ::= COMMAND_NAME (CONST_NAME|INTEGER) (CONST_NAME|INTEGER) (CONST_NAME|INTEGER) (CONST_NAME|INTEGER)
+one_parameter_command ::= COMMAND_NAME (CONST_NAME|INTEGER)
+no_parameter_command ::= COMMAND_NAME

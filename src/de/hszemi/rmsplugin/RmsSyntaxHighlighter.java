@@ -17,6 +17,7 @@ import static com.intellij.openapi.editor.colors.TextAttributesKey.createTextAtt
 public class RmsSyntaxHighlighter extends SyntaxHighlighterBase {
 	public static final Set<IElementType> HEADERS = headers();
 	public static final Set<IElementType> MACROS = macros();
+	public static final Set<IElementType> BRACKETS = brackets();
 
 	private static Set<IElementType> headers() {
 		LinkedHashSet<IElementType> headers = new LinkedHashSet<>();
@@ -34,6 +35,12 @@ public class RmsSyntaxHighlighter extends SyntaxHighlighterBase {
 		macros.add(RmsTypes.KEYWORD_HASHMACRO);
 		return macros;
 	}
+	private static Set<IElementType> brackets() {
+		LinkedHashSet<IElementType> brackets = new LinkedHashSet<>();
+		brackets.add(RmsTypes.LEFT_BRACKET);
+		brackets.add(RmsTypes.RIGHT_BRACKET);
+		return brackets;
+	}
 
 	public static final TextAttributesKey SECTION_HEADER =
 			createTextAttributesKey("Rms_SECTION_HEADER", DefaultLanguageHighlighterColors.FUNCTION_DECLARATION);
@@ -45,6 +52,8 @@ public class RmsSyntaxHighlighter extends SyntaxHighlighterBase {
 			createTextAttributesKey("Rms_INTEGER", DefaultLanguageHighlighterColors.NUMBER);
 	public static final TextAttributesKey COMMENT =
 			createTextAttributesKey("Rms_COMMENT", DefaultLanguageHighlighterColors.LINE_COMMENT);
+	public static final TextAttributesKey BRACES =
+			createTextAttributesKey("Rms_BRACKETS", DefaultLanguageHighlighterColors.BRACES);
 	public static final TextAttributesKey BAD_CHARACTER =
 			createTextAttributesKey("Rms_BAD_CHARACTER", HighlighterColors.BAD_CHARACTER);
 
@@ -54,6 +63,7 @@ public class RmsSyntaxHighlighter extends SyntaxHighlighterBase {
 	private static final TextAttributesKey[] CONST_NAME_KEYS = new TextAttributesKey[]{CONST_NAME};
 	private static final TextAttributesKey[] KEYWORD_CONST_KEYS = new TextAttributesKey[]{KEYWORD_CONST};
 	private static final TextAttributesKey[] COMMENT_KEYS = new TextAttributesKey[]{COMMENT};
+	private static final TextAttributesKey[] BRACES_KEYS = new TextAttributesKey[]{BRACES};
 	private static final TextAttributesKey[] EMPTY_KEYS = new TextAttributesKey[0];
 
 	@NotNull
@@ -73,6 +83,8 @@ public class RmsSyntaxHighlighter extends SyntaxHighlighterBase {
 			return CONST_NAME_KEYS;
 		} else if (MACROS.contains(tokenType)) {
 			return KEYWORD_CONST_KEYS;
+		} else if (BRACKETS.contains(tokenType)) {
+			return BRACES_KEYS;
 		} else if (tokenType.equals(RmsTypes.COMMENT)) {
 			return COMMENT_KEYS;
 		} else if (tokenType.equals(TokenType.BAD_CHARACTER)) {
