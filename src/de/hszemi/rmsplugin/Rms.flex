@@ -19,7 +19,6 @@ CRLF=\R | \n | \r\n
 WHITE_SPACE=[\ \n\t\f]
 KEYWORD_HASHMACRO=#[a-z_]+
 CONST_NAME=[A-Z_][A-Z_0-9]*
-HASHMACRO_NAME=[A-Za-z_][a-z_0-9]*
 FILENAME=[A-Za-z._][A-Za-z._0-9]*
 COMMAND_NAME=[a-z_][a-z_0-9]*
 INTEGER=-?[1-9][0-9]* | 0
@@ -28,7 +27,6 @@ RIGHT_BRACKET=\}
 START_RANDOM=start_random
 END_RANDOM=end_random
 PERCENT_CHANCE=percent_chance
-DEFINE=#define
 IF_STATEMENT=if
 ELSEIF_STATEMENT=elseif
 ELSE_STATEMENT=else
@@ -64,8 +62,6 @@ COMMAND_OBJECTS_GENERATION=COG | {CRLF}
 
 %state WAITING_VALUE
 %state IN_COMMENT
-%state IN_HASHMACRO_EXPECT_NAME
-%state IN_HASHMACRO_EXPECT_VALUE
 %state IN_PLAYER_SETUP
 %state IN_LAND_GENERATION
 %state IN_ELEVATION_GENERATION
@@ -76,10 +72,6 @@ COMMAND_OBJECTS_GENERATION=COG | {CRLF}
 
 %%
 
-<YYINITIAL> {KEYWORD_HASHMACRO}                                 { yybegin(IN_HASHMACRO_EXPECT_NAME); return RmsTypes.KEYWORD_HASHMACRO; }
-<IN_HASHMACRO_EXPECT_NAME> {CONST_NAME}                        { yybegin(IN_HASHMACRO_EXPECT_VALUE); return RmsTypes.CONST_NAME; }
-<IN_HASHMACRO_EXPECT_NAME> {FILENAME}                        { yybegin(IN_HASHMACRO_EXPECT_VALUE); return RmsTypes.FILENAME; }
-<IN_HASHMACRO_EXPECT_VALUE> {INTEGER}                       { yybegin(YYINITIAL); return RmsTypes.INTEGER; }
 
 {HEADER_PLAYER_SETUP}                           { yybegin(IN_PLAYER_SETUP); return RmsTypes.HEADER_PLAYER_SETUP; }
 {HEADER_LAND_GENERATION}                        { yybegin(IN_LAND_GENERATION); return RmsTypes.HEADER_LAND_GENERATION; }
@@ -94,7 +86,6 @@ COMMAND_OBJECTS_GENERATION=COG | {CRLF}
 {START_RANDOM}                                   { return RmsTypes.START_RANDOM; }
 {END_RANDOM}                                     { return RmsTypes.END_RANDOM; }
 {PERCENT_CHANCE}                                     { return RmsTypes.PERCENT_CHANCE; }
-{DEFINE}                                     { return RmsTypes.DEFINE; }
 {IF_STATEMENT}                                     { return RmsTypes.IF_STATEMENT; }
 {ELSEIF_STATEMENT}                                     { return RmsTypes.ELSEIF_STATEMENT; }
 {ELSE_STATEMENT}                                     { return RmsTypes.ELSE_STATEMENT; }
@@ -130,8 +121,10 @@ COMMAND_OBJECTS_GENERATION=COG | {CRLF}
 }
 
 
- {CONST_NAME}                                 { return RmsTypes.CONST_NAME; }
- {INTEGER}                                    { return RmsTypes.INTEGER; }
+{CONST_NAME}                                    { return RmsTypes.CONST_NAME; }
+{KEYWORD_HASHMACRO}                             { return RmsTypes.KEYWORD_HASHMACRO; }
+{FILENAME}                                      { return RmsTypes.FILENAME; }
+{INTEGER}                                       { return RmsTypes.INTEGER; }
 
 "/*"                                            { yypushstate(IN_COMMENT); }
 

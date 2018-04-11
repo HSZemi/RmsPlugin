@@ -15,7 +15,7 @@
 
 rmsFile ::= item_*
 
-private item_ ::= (section|hashmacro|COMMENT|CRLF)
+private item_ ::= (section|hashmacro|if_block|random_block|COMMENT|CRLF)
 
 
 
@@ -42,15 +42,15 @@ private connection_generation_command ::= (command|COMMAND_CONNECTION_GENERATION
 objects_generation ::= HEADER_OBJECTS_GENERATION (objects_generation_command|CRLF)*
 private objects_generation_command ::= (command|COMMAND_OBJECTS_GENERATION|COMMENT)
 
-command ::= brackets_command | non_brackets_command
+command ::= hashmacro | brackets_command | non_brackets_command
 
-random_block ::= START_RANDOM (PERCENT_CHANCE INTEGER DEFINE CONST_NAME)* END_RANDOM
+random_block ::= START_RANDOM (PERCENT_CHANCE INTEGER command*)* END_RANDOM
 
 if_block ::= IF_STATEMENT CONST_NAME command* (ELSEIF_STATEMENT CONST_NAME command*)* (ELSE_STATEMENT command*)* ENDIF_STATEMENT
 
-private non_brackets_command ::= random_block | if_block | four_parameter_command | one_parameter_command | no_parameter_command | COMMENT
+private non_brackets_command ::= if_block | random_block | two_or_more_parameter_command | one_parameter_command | no_parameter_command | COMMENT
 
-brackets_command ::= COMMAND_NAME CONST_NAME? LEFT_BRACKET (non_brackets_command|CRLF)* RIGHT_BRACKET
-four_parameter_command ::= COMMAND_NAME (CONST_NAME|INTEGER) (CONST_NAME|INTEGER) (CONST_NAME|INTEGER) (CONST_NAME|INTEGER)
+brackets_command ::= (if_block | one_parameter_command | no_parameter_command ) LEFT_BRACKET (non_brackets_command|CRLF)* RIGHT_BRACKET
+two_or_more_parameter_command ::= COMMAND_NAME (CONST_NAME|INTEGER) (CONST_NAME|INTEGER) (CONST_NAME|INTEGER)? (CONST_NAME|INTEGER)?
 one_parameter_command ::= COMMAND_NAME (CONST_NAME|INTEGER)
 no_parameter_command ::= COMMAND_NAME
