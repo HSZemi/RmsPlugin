@@ -1,17 +1,15 @@
 <idea-plugin>
-  <id>com.your.company.unique.plugin.id</id>
-  <name>Plugin display name here</name>
-  <version>1.0</version>
-  <vendor email="support@yourcompany.com" url="http://www.yourcompany.com">YourCompany</vendor>
+  <id>de.hszemi.rmsplugin</id>
+  <name>RMS plugin</name>
+  <version>0.1</version>
+  <vendor email="rmsplugin@hszemi.de" url="https://hszemi.de">hszemi</vendor>
 
   <description><![CDATA[
-      Enter short description for your plugin here.<br>
-      <em>most HTML tags may be used</em>
+      Support for Age of Empires II Random Map Scripts
     ]]></description>
 
   <change-notes><![CDATA[
-      Add change notes here.<br>
-      <em>most HTML tags may be used</em>
+      (none)
     ]]>
   </change-notes>
 
@@ -26,6 +24,12 @@
 
   <extensions defaultExtensionNs="com.intellij">
     <!-- Add your extensions here -->
+    <fileTypeFactory implementation="de.hszemi.rmsplugin.RmsFileTypeFactory"/>
+    <lang.parserDefinition language="Rms" implementationClass="de.hszemi.rmsplugin.RmsParserDefinition"/>
+    <lang.syntaxHighlighterFactory language="Rms" implementationClass="de.hszemi.rmsplugin.RmsSyntaxHighlighterFactory"/>
+    <colorSettingsPage implementation="de.hszemi.rmsplugin.RmsColorSettingsPage"/>
+    <lang.commenter language="Rms" implementationClass="de.hszemi.rmsplugin.RmsCommenter"/>
+    <lang.formatter language="Rms" implementationClass="de.hszemi.rmsplugin.RmsFormattingModelBuilder"/>
   </extensions>
 
   <actions>
