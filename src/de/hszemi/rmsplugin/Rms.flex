@@ -21,7 +21,7 @@ KEYWORD_HASHMACRO=#[a-z_]+
 CONST_NAME=[A-Z_][A-Z_0-9]*
 FILENAME=[A-Za-z._][A-Za-z._0-9]*
 COMMAND_NAME=[a-z_][a-z_0-9]*
-INTEGER=-?[1-9][0-9]* | 0
+INT=-?[1-9][0-9]* | 0
 LEFT_BRACKET=\{
 RIGHT_BRACKET=\}
 START_RANDOM=start_random
@@ -38,13 +38,10 @@ HEADER_CLIFF_GENERATION=<CLIFF_GENERATION>
 HEADER_TERRAIN_GENERATION=<TERRAIN_GENERATION>
 HEADER_CONNECTION_GENERATION=<CONNECTION_GENERATION>
 HEADER_OBJECTS_GENERATION=<OBJECTS_GENERATION>
-COMMAND_PLAYER_SETUP=CPS | {CRLF}
-COMMAND_LAND_GENERATION=CLG | {CRLF}
-COMMAND_ELEVATION_GENERATION=CEG | {CRLF}
-COMMAND_CLIFF_GENERATION=CCG | {CRLF}
-COMMAND_TERRAIN_GENERATION=CTG | {CRLF}
-COMMAND_CONNECTION_GENERATION=CCNG | {CRLF}
-COMMAND_OBJECTS_GENERATION=COG | {CRLF}
+RND=rnd
+LEFT_PARENTHESIS=\(
+RIGHT_PARENTHESIS=\)
+COMMA=,
 
 %{
     // This adds support for nested states. I'm no JFlex pro, so maybe this is overkill, but it works quite well.
@@ -72,6 +69,13 @@ COMMAND_OBJECTS_GENERATION=COG | {CRLF}
 
 %%
 
+"/*"                                            { yypushstate(IN_COMMENT); }
+
+<IN_COMMENT> "*/"                                           { yypopstate(); return RmsTypes.COMMENT; }
+<IN_COMMENT> [^*\n]+                                        {}
+<IN_COMMENT> "*"                                            {}
+<IN_COMMENT> \n                                             {}
+
 
 {HEADER_PLAYER_SETUP}                           { yybegin(IN_PLAYER_SETUP); return RmsTypes.HEADER_PLAYER_SETUP; }
 {HEADER_LAND_GENERATION}                        { yybegin(IN_LAND_GENERATION); return RmsTypes.HEADER_LAND_GENERATION; }
@@ -83,6 +87,10 @@ COMMAND_OBJECTS_GENERATION=COG | {CRLF}
 
 {LEFT_BRACKET}                                   { return RmsTypes.LEFT_BRACKET; }
 {RIGHT_BRACKET}                                  { return RmsTypes.RIGHT_BRACKET; }
+{LEFT_PARENTHESIS}                                   { return RmsTypes.LEFT_PARENTHESIS; }
+{RIGHT_PARENTHESIS}                                  { return RmsTypes.RIGHT_PARENTHESIS; }
+{COMMA}                                             { return RmsTypes.COMMA; }
+{RND}                                             { return RmsTypes.RND; }
 {START_RANDOM}                                   { return RmsTypes.START_RANDOM; }
 {END_RANDOM}                                     { return RmsTypes.END_RANDOM; }
 {PERCENT_CHANCE}                                     { return RmsTypes.PERCENT_CHANCE; }
@@ -92,31 +100,24 @@ COMMAND_OBJECTS_GENERATION=COG | {CRLF}
 {ENDIF_STATEMENT}                                     { return RmsTypes.ENDIF_STATEMENT; }
 
 <IN_PLAYER_SETUP> {
- {COMMAND_PLAYER_SETUP}{CRLF}                    { yybegin(IN_PLAYER_SETUP); return RmsTypes.COMMAND_PLAYER_SETUP; }
  {COMMAND_NAME}                                 { return RmsTypes.COMMAND_NAME; }
 }
 <IN_LAND_GENERATION> {
-{COMMAND_LAND_GENERATION}{CRLF}              { yybegin(IN_LAND_GENERATION); return RmsTypes.COMMAND_LAND_GENERATION; }
  {COMMAND_NAME}                                 { return RmsTypes.COMMAND_NAME; }
 }
 <IN_ELEVATION_GENERATION>{
- {COMMAND_ELEVATION_GENERATION}{CRLF}    { yybegin(IN_ELEVATION_GENERATION); return RmsTypes.COMMAND_ELEVATION_GENERATION; }
  {COMMAND_NAME}                                 { return RmsTypes.COMMAND_NAME; }
 }
 <IN_CLIFF_GENERATION>{
- {COMMAND_CLIFF_GENERATION}{CRLF}            { yybegin(IN_CLIFF_GENERATION); return RmsTypes.COMMAND_CLIFF_GENERATION; }
  {COMMAND_NAME}                                 { return RmsTypes.COMMAND_NAME; }
 }
 <IN_TERRAIN_GENERATION>{
- {COMMAND_TERRAIN_GENERATION}{CRLF}        { yybegin(IN_TERRAIN_GENERATION); return RmsTypes.COMMAND_TERRAIN_GENERATION; }
  {COMMAND_NAME}                                 { return RmsTypes.COMMAND_NAME; }
 }
 <IN_CONNECTION_GENERATION>{
- {COMMAND_CONNECTION_GENERATION}{CRLF}  { yybegin(IN_CONNECTION_GENERATION); return RmsTypes.COMMAND_CONNECTION_GENERATION; }
  {COMMAND_NAME}                                 { return RmsTypes.COMMAND_NAME; }
 }
 <IN_OBJECTS_GENERATION>{
- {COMMAND_OBJECTS_GENERATION}{CRLF}        { yybegin(IN_OBJECTS_GENERATION); return RmsTypes.COMMAND_OBJECTS_GENERATION; }
  {COMMAND_NAME}                                 { return RmsTypes.COMMAND_NAME; }
 }
 
@@ -124,14 +125,9 @@ COMMAND_OBJECTS_GENERATION=COG | {CRLF}
 {CONST_NAME}                                    { return RmsTypes.CONST_NAME; }
 {KEYWORD_HASHMACRO}                             { return RmsTypes.KEYWORD_HASHMACRO; }
 {FILENAME}                                      { return RmsTypes.FILENAME; }
-{INTEGER}                                       { return RmsTypes.INTEGER; }
+{INT}                                       { return RmsTypes.INT; }
 
-"/*"                                            { yypushstate(IN_COMMENT); }
 
-<IN_COMMENT> "*/"                                           { yypopstate(); return RmsTypes.COMMENT; }
-<IN_COMMENT> [^*\n]+                                        {}
-<IN_COMMENT> "*"                                            {}
-<IN_COMMENT> \n                                             {}
 
 <WAITING_VALUE> {CRLF}({CRLF}|{WHITE_SPACE})+               { yybegin(YYINITIAL); return TokenType.WHITE_SPACE; }
 
