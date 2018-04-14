@@ -26,13 +26,20 @@ command ::= hashmacro | brackets_command | non_brackets_command | header
 header ::= HEADER_PLAYER_SETUP | HEADER_LAND_GENERATION | HEADER_ELEVATION_GENERATION |
             HEADER_CLIFF_GENERATION | HEADER_TERRAIN_GENERATION | HEADER_CONNECTION_GENERATION | HEADER_OBJECTS_GENERATION
 
-random_block ::= START_RANDOM (PERCENT_CHANCE integer? command*)* END_RANDOM
+random_block ::= START_RANDOM (percent_chance_block)* END_RANDOM
 
-if_block ::= IF_STATEMENT CONST_NAME command* (ELSEIF_STATEMENT CONST_NAME command*)* (ELSE_STATEMENT command*)* ENDIF_STATEMENT
+percent_chance_block ::= percent_chance_command block_content?
+
+percent_chance_command ::= PERCENT_CHANCE integer?
+
+if_block ::= IF_STATEMENT CONST_NAME block_content? (ELSEIF_STATEMENT CONST_NAME block_content?)* (ELSE_STATEMENT block_content?)* ENDIF_STATEMENT
+
+block_content ::= command+
 
 private non_brackets_command ::= if_block | random_block | simple_command | COMMENT
+non_brackets_command_in_brackets ::= non_brackets_command
 
-brackets_command ::= (if_block | one_parameter_command | no_parameter_command ) LEFT_BRACKET (non_brackets_command|CRLF)* RIGHT_BRACKET
+brackets_command ::= (if_block | one_parameter_command | no_parameter_command ) LEFT_BRACKET (non_brackets_command_in_brackets | CRLF)* RIGHT_BRACKET
 simple_command ::= four_parameter_command | three_parameter_command | two_parameter_command | one_parameter_command | no_parameter_command
 four_parameter_command ::= COMMAND_NAME (CONST_NAME|integer) (CONST_NAME|integer) (CONST_NAME|integer) (CONST_NAME|integer)
 three_parameter_command ::= COMMAND_NAME (CONST_NAME|integer) (CONST_NAME|integer) (CONST_NAME|integer)

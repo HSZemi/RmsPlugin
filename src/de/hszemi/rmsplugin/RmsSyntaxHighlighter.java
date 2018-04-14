@@ -18,6 +18,7 @@ public class RmsSyntaxHighlighter extends SyntaxHighlighterBase {
 	public static final Set<IElementType> HEADERS = headers();
 	public static final Set<IElementType> MACROS = macros();
 	public static final Set<IElementType> BRACKETS = brackets();
+	public static final Set<IElementType> CONTROLFLOW = controlflow();
 
 	private static Set<IElementType> headers() {
 		LinkedHashSet<IElementType> headers = new LinkedHashSet<>();
@@ -39,6 +40,20 @@ public class RmsSyntaxHighlighter extends SyntaxHighlighterBase {
 		LinkedHashSet<IElementType> brackets = new LinkedHashSet<>();
 		brackets.add(RmsTypes.LEFT_BRACKET);
 		brackets.add(RmsTypes.RIGHT_BRACKET);
+		brackets.add(RmsTypes.LEFT_PARENTHESIS);
+		brackets.add(RmsTypes.RIGHT_PARENTHESIS);
+		return brackets;
+	}
+	private static Set<IElementType> controlflow() {
+		LinkedHashSet<IElementType> brackets = new LinkedHashSet<>();
+		brackets.add(RmsTypes.IF_STATEMENT);
+		brackets.add(RmsTypes.ELSE_STATEMENT);
+		brackets.add(RmsTypes.ELSEIF_STATEMENT);
+		brackets.add(RmsTypes.ENDIF_STATEMENT);
+		brackets.add(RmsTypes.START_RANDOM);
+		brackets.add(RmsTypes.END_RANDOM);
+		brackets.add(RmsTypes.PERCENT_CHANCE);
+		brackets.add(RmsTypes.RND);
 		return brackets;
 	}
 
@@ -49,11 +64,13 @@ public class RmsSyntaxHighlighter extends SyntaxHighlighterBase {
 	public static final TextAttributesKey CONST_NAME =
 			createTextAttributesKey("Rms_CONST_NAME", DefaultLanguageHighlighterColors.STATIC_FIELD);
 	public static final TextAttributesKey INTEGER =
-			createTextAttributesKey("Rms_INTEGER", DefaultLanguageHighlighterColors.NUMBER);
+			createTextAttributesKey("Rms_INT", DefaultLanguageHighlighterColors.NUMBER);
 	public static final TextAttributesKey COMMENT =
 			createTextAttributesKey("Rms_COMMENT", DefaultLanguageHighlighterColors.LINE_COMMENT);
 	public static final TextAttributesKey BRACES =
 			createTextAttributesKey("Rms_BRACKETS", DefaultLanguageHighlighterColors.BRACES);
+	public static final TextAttributesKey CONTROL_FLOW =
+			createTextAttributesKey("Rms_BRACKETS", DefaultLanguageHighlighterColors.KEYWORD);
 	public static final TextAttributesKey BAD_CHARACTER =
 			createTextAttributesKey("Rms_BAD_CHARACTER", HighlighterColors.BAD_CHARACTER);
 
@@ -64,6 +81,7 @@ public class RmsSyntaxHighlighter extends SyntaxHighlighterBase {
 	private static final TextAttributesKey[] KEYWORD_CONST_KEYS = new TextAttributesKey[]{KEYWORD_CONST};
 	private static final TextAttributesKey[] COMMENT_KEYS = new TextAttributesKey[]{COMMENT};
 	private static final TextAttributesKey[] BRACES_KEYS = new TextAttributesKey[]{BRACES};
+	private static final TextAttributesKey[] CONTROL_FLOW_KEYS = new TextAttributesKey[]{CONTROL_FLOW};
 	private static final TextAttributesKey[] EMPTY_KEYS = new TextAttributesKey[0];
 
 	@NotNull
@@ -75,7 +93,7 @@ public class RmsSyntaxHighlighter extends SyntaxHighlighterBase {
 	@NotNull
 	@Override
 	public TextAttributesKey[] getTokenHighlights(IElementType tokenType) {
-		if (tokenType.equals(RmsTypes.INTEGER)) {
+		if (tokenType.equals(RmsTypes.INT)) {
 			return INTEGER_KEYS;
 		} else if (HEADERS.contains(tokenType)) {
 			return CONST_SECTION_HEADER;
@@ -83,6 +101,8 @@ public class RmsSyntaxHighlighter extends SyntaxHighlighterBase {
 			return CONST_NAME_KEYS;
 		} else if (MACROS.contains(tokenType)) {
 			return KEYWORD_CONST_KEYS;
+		} else if (CONTROLFLOW.contains(tokenType)) {
+			return CONTROL_FLOW_KEYS;
 		} else if (BRACKETS.contains(tokenType)) {
 			return BRACES_KEYS;
 		} else if (tokenType.equals(RmsTypes.COMMENT)) {
