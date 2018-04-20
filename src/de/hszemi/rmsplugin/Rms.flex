@@ -69,9 +69,9 @@ COMMA=,
 
 %%
 
-"/*"                                            { yypushstate(IN_COMMENT); }
+"/* "                                            { yypushstate(IN_COMMENT); }
 
-<IN_COMMENT> "*/"                                           { yypopstate(); return RmsTypes.COMMENT; }
+<IN_COMMENT> " */"                                           { yypopstate(); return RmsTypes.COMMENT; }
 <IN_COMMENT> [^*\n]+                                        {}
 <IN_COMMENT> "*"                                            {}
 <IN_COMMENT> \n                                             {}
