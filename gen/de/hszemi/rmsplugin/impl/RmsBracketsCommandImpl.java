@@ -50,4 +50,10 @@ public class RmsBracketsCommandImpl extends ASTWrapperPsiElement implements RmsB
     return findChildByClass(RmsOneParameterCommand.class);
   }
 
+  @Override
+  @Nullable
+  public RmsRandomBlock getRandomBlock() {
+    return findChildByClass(RmsRandomBlock.class);
+  }
+
 }

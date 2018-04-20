@@ -108,10 +108,9 @@ public class RmsParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // (if_block | one_parameter_command | no_parameter_command ) LEFT_BRACKET (non_brackets_command_in_brackets | CRLF)* RIGHT_BRACKET
+  // (if_block | random_block | one_parameter_command | no_parameter_command ) LEFT_BRACKET (non_brackets_command_in_brackets | CRLF)* RIGHT_BRACKET
   public static boolean brackets_command(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "brackets_command")) return false;
-    if (!nextTokenIs(b, "<brackets command>", COMMAND_NAME, IF_STATEMENT)) return false;
     boolean r;
     Marker m = enter_section_(b, l, _NONE_, BRACKETS_COMMAND, "<brackets command>");
     r = brackets_command_0(b, l + 1);
@@ -122,12 +121,13 @@ public class RmsParser implements PsiParser, LightPsiParser {
     return r;
   }
 
-  // if_block | one_parameter_command | no_parameter_command
+  // if_block | random_block | one_parameter_command | no_parameter_command
   private static boolean brackets_command_0(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "brackets_command_0")) return false;
     boolean r;
     Marker m = enter_section_(b);
     r = if_block(b, l + 1);
+    if (!r) r = random_block(b, l + 1);
     if (!r) r = one_parameter_command(b, l + 1);
     if (!r) r = no_parameter_command(b, l + 1);
     exit_section_(b, m, null, r);

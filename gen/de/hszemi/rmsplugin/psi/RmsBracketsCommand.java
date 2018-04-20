@@ -19,4 +19,7 @@ public interface RmsBracketsCommand extends PsiElement {
   @Nullable
   RmsOneParameterCommand getOneParameterCommand();
 
+  @Nullable
+  RmsRandomBlock getRandomBlock();
+
 }

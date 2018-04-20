@@ -39,7 +39,7 @@ block_content ::= command+
 private non_brackets_command ::= if_block | random_block | simple_command | COMMENT
 non_brackets_command_in_brackets ::= non_brackets_command
 
-brackets_command ::= (if_block | one_parameter_command | no_parameter_command ) LEFT_BRACKET (non_brackets_command_in_brackets | CRLF)* RIGHT_BRACKET
+brackets_command ::= (if_block | random_block | one_parameter_command | no_parameter_command ) LEFT_BRACKET (non_brackets_command_in_brackets | CRLF)* RIGHT_BRACKET
 simple_command ::= four_parameter_command | three_parameter_command | two_parameter_command | one_parameter_command | no_parameter_command
 four_parameter_command ::= COMMAND_NAME (CONST_NAME|integer) (CONST_NAME|integer) (CONST_NAME|integer) (CONST_NAME|integer)
 three_parameter_command ::= COMMAND_NAME (CONST_NAME|integer) (CONST_NAME|integer) (CONST_NAME|integer)
