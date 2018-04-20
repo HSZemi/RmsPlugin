@@ -39,14 +39,18 @@ public class RmsBlock extends AbstractBlock {
 
 	@Override
 	public Indent getIndent() {
-		if(this.getNode().getTreeParent().getElementType() == RmsTypes.BLOCK_CONTENT){
+		ASTNode treeParent = this.getNode().getTreeParent();
+		if (treeParent != null) {
+			IElementType elementType = treeParent.getElementType();
+			if (elementType == RmsTypes.BLOCK_CONTENT) {
 			return Indent.getNormalIndent();
 		}
-		if(this.getNode().getTreeParent().getElementType() == RmsTypes.PERCENT_CHANCE_BLOCK){
+			if (elementType == RmsTypes.PERCENT_CHANCE_BLOCK) {
 			return Indent.getNormalIndent();
 		}
-		if(this.getNode().getTreeParent().getElementType() == RmsTypes.NON_BRACKETS_COMMAND_IN_BRACKETS){
+			if (elementType == RmsTypes.NON_BRACKETS_COMMAND_IN_BRACKETS) {
 			return Indent.getNormalIndent();
+			}
 		}
 		return Indent.getNoneIndent();
 	}
