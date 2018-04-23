@@ -57,7 +57,7 @@ COMMA=,
     }
 %}
 
-%state WAITING_VALUE
+%state INITIAL
 %state IN_COMMENT
 %state IN_PLAYER_SETUP
 %state IN_LAND_GENERATION
@@ -69,12 +69,11 @@ COMMA=,
 
 %%
 
-"/* "                                            { yypushstate(IN_COMMENT); }
+"/*"                                          { yypushstate(IN_COMMENT); }
 
-<IN_COMMENT> " */"                                           { yypopstate(); return RmsTypes.COMMENT; }
-<IN_COMMENT> [^*\n]+                                        {}
-<IN_COMMENT> "*"                                            {}
-<IN_COMMENT> \n                                             {}
+<IN_COMMENT> "*/"                             { yypopstate(); return RmsTypes.COMMENT; }
+<IN_COMMENT> [^*]+                              {}
+<IN_COMMENT> "*"                                {}
 
 
 {HEADER_PLAYER_SETUP}                           { yybegin(IN_PLAYER_SETUP); return RmsTypes.HEADER_PLAYER_SETUP; }
@@ -126,12 +125,6 @@ COMMA=,
 {KEYWORD_HASHMACRO}                             { return RmsTypes.KEYWORD_HASHMACRO; }
 {FILENAME}                                      { return RmsTypes.FILENAME; }
 {INT}                                       { return RmsTypes.INT; }
-
-
-
-<WAITING_VALUE> {CRLF}({CRLF}|{WHITE_SPACE})+               { yybegin(YYINITIAL); return TokenType.WHITE_SPACE; }
-
-<WAITING_VALUE> {WHITE_SPACE}+                              { yybegin(WAITING_VALUE); return TokenType.WHITE_SPACE; }
 
 
 ({CRLF}|{WHITE_SPACE})+                                     { return TokenType.WHITE_SPACE; }

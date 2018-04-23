@@ -5,5 +5,5 @@ package de.hszemi.rmsplugin;
 		import javax.swing.*;
 
 public class RmsIcons {
-	public static final Icon FILE = IconLoader.getIcon("/de/hszemi/rmsplugin/icons/RmsIcon.png");
+	public static final Icon FILE = IconLoader.getIcon("/RmsIcon.png");
 }

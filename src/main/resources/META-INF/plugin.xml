@@ -1,7 +1,7 @@
 <idea-plugin>
   <id>de.hszemi.rmsplugin</id>
   <name>RMS plugin</name>
-  <version>0.1.1</version>
+  <version>0.1.2</version>
   <vendor email="rmsplugin@hszemi.de" url="https://hszemi.de">hszemi</vendor>
 
   <description><![CDATA[

@@ -1,10 +1,15 @@
+.gradle
+*.swp
 *.iml
+*.ipr
+*.iws
 .idea
 .directory
 idea-flex.skeleton
 RmsPlugin.jar
 
 out
+build
 
 # Compiled class file
 *.class

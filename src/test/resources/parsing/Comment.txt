@@ -1,0 +1,4 @@
+Rms File(0,47)
+  PsiComment(RmsTokenType.COMMENT)('/* i am a comment */')(0,20)
+  PsiWhiteSpace('\n')(20,21)
+  PsiComment(RmsTokenType.COMMENT)('/*i am a comment as well*/')(21,47)

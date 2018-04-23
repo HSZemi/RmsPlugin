@@ -1,0 +1,28 @@
+buildscript {
+    repositories {
+        mavenCentral()
+    }
+}
+
+plugins {
+    id "org.jetbrains.intellij" version "0.3.0"
+}
+
+apply plugin: 'idea'
+apply plugin: 'org.jetbrains.intellij'
+apply plugin: 'java'
+
+sourceSets.main.java.srcDir new File('gen')
+intellij {
+    plugins 'coverage' //Bundled plugin dependencies
+    pluginName 'RmsPlugin'
+}
+idea {
+    module {
+        // Marks the already(!) added srcDir as "generated"
+        generatedSourceDirs += file('gen')
+    }
+}
+
+group 'de.hszemi'
+version '0.1.2'
