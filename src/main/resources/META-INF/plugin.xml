@@ -30,6 +30,7 @@
     <colorSettingsPage implementation="de.hszemi.rmsplugin.RmsColorSettingsPage"/>
     <lang.commenter language="Rms" implementationClass="de.hszemi.rmsplugin.RmsCommenter"/>
     <lang.formatter language="Rms" implementationClass="de.hszemi.rmsplugin.RmsFormattingModelBuilder"/>
+    <annotator language="Rms" implementationClass="de.hszemi.rmsplugin.RmsAnnotator"/>
   </extensions>
 
   <actions>

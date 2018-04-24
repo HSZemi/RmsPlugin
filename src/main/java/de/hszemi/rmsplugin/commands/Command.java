@@ -1,0 +1,98 @@
+package de.hszemi.rmsplugin.commands;
+
+import java.util.Arrays;
+import java.util.LinkedHashSet;
+import java.util.Set;
+
+public class Command {
+	public static final Set<String> allCommands = new LinkedHashSet<>(Arrays.asList(
+			"random_placement",
+			"grouped_by_team",
+			"nomad_resources",
+
+			"base_terrain",
+			"create_player_lands",
+			"create_land",
+
+			"terrain_type",
+			"land_percent",
+			"number_of_tiles",
+			"base_size",
+			"base_elevation",
+			"left_border",
+			"right_border",
+			"top_border",
+			"bottom_border",
+			"land_position",
+			"border_fuzziness",
+			"clumping_factor",
+			"zone",
+			"set_zone_randomly",
+			"set_zone_by_team",
+			"other_zone_avoidance_distance",
+			"land_id",
+			"assign_to_player",
+
+			"create_elevation",
+			"base_terrain",
+			"number_of_tiles",
+			"number_of_clumps",
+			"set_scale_by_size",
+			"set_scale_by_groups",
+			"spacing",
+
+			"min_number_of_cliffs",
+			"max_number_of_cliffs",
+			"min_length_of_cliff",
+			"max_length_of_cliff",
+			"cliff_curliness",
+			"min_distance_cliffs",
+			"min_terrain_distance",
+
+			"create_terrain",
+			"base_terrain",
+			"land_percent",
+			"number_of_tiles",
+			"number_of_clumps",
+			"set_scale_by_size",
+			"set_scale_by_groups",
+			"spacing_to_other_terrain_types",
+			"set_avoid_player_start_areas",
+			"height_limits",
+			"set_flat_terrain_only",
+			"clumping_factor",
+
+			"create_connect_all_lands",
+			"create_connect_all_players_land",
+			"create_connect_teams_lands",
+			"create_connect_same_land_zones",
+			"default_terrain_replacement",
+			"replace_terrain",
+			"terrain_cost",
+			"terrain_size",
+
+			"create_object",
+			"number_of_objects",
+			"number_of_groups",
+			"group_variance",
+			"set_scaling_to_map_size",
+			"set_scaling_to_player_number",
+			"set_place_for_every_player",
+			"set_gaia_object_only",
+			"terrain_to_place_on",
+			"min_distance_to_players",
+			"max_distance_to_players",
+			"max_distance_to_other_zones",
+			"min_distance_group_placement",
+			"temp_min_distance_group_placement",
+			"group_placement_radius",
+			"set_tight_grouping",
+			"set_loose_grouping",
+			"place_on_specific_land_id",
+			"resource_delta",
+
+			"ai_info_map_type",
+			"guard_state",
+			"effect_amount",
+			"effect_percent"));
+}
